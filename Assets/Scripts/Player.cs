@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     private Animator anim;
     private SpriteRenderer sr;
     private string WALK_ANIMATION = "walk";
+    private string GROUND_TAG ="Ground";
+    private string ENEMY_TAG ="Enemy";
     private bool isGrounded;
     private void Awake() {
         myBody = GetComponent<Rigidbody2D>();
@@ -32,7 +34,7 @@ public class Player : MonoBehaviour
         AnimatePlayer();
         PlayerJump();
     }
-
+// void FixedUpdate({})
     void PlayerMoveKeyBorad() {
     movementX = Input.GetAxisRaw("Horizontal");
     transform.position +=  new Vector3(movementX , 0f, 0f) * moveForce * Time.deltaTime;
@@ -63,4 +65,14 @@ isGrounded= false;
             myBody.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
         }
     }
+private void OnCollisionEnter2D(Collision2D collision) {
+    if (collision.gameObject.CompareTag(GROUND_TAG))
+    {
+        isGrounded = true;
+    }
+        if (collision.gameObject.CompareTag(ENEMY_TAG))
+    {
+        Destroy(gameObject);
+    }
+}
 }
